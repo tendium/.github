@@ -30,6 +30,10 @@ jobs:
         with:
           anthropic_api_key: ${{ secrets.anthropic_api_key }}
 
+          # Context loading for all @claude interactions
+          claude_args: |
+            --append-system-prompt "Before responding to any request: 1) Map the .agents/steering/ structure to discover available documentation, 2) Read relevant context.md files based on the changes being discussed, 3) Read CLAUDE.md for overall project guidelines."
+
   # Automatic PR review with progress tracking
   claude-pr-review:
     if: |
