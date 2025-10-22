@@ -1,0 +1,43 @@
+name: Mirror to Bitbucket
+
+on:
+  workflow_call:
+    inputs:
+      source-repo:
+        description: "SSH URL of the source GitHub repository (e.g., git@github.com:org/repo.git)"
+        required: true
+        type: string
+      destination-repo:
+        description: "SSH URL of the destination Bitbucket repository (e.g., git@bitbucket.org:org/repo.git)"
+        required: true
+        type: string
+      dry-run:
+        description: "Perform a dry run without pushing to destination"
+        default: false
+        type: boolean
+    secrets:
+      ssh-private-key:
+        description: "SSH private key with write access to both repositories"
+        required: true
+      ssh-known-hosts:
+        description: "SSH known hosts content for bitbucket.org"
+        required: false
+
+# Prevent concurrent mirror operations to avoid conflicts
+concurrency:
+  group: git-mirror-${{ inputs.destination-repo }}
+  cancel-in-progress: false
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mirror repository
+        uses: wearerequired/git-mirror-action@v1
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ssh-private-key }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ssh-known-hosts }}
+        with:
+          source-repo: ${{ inputs.source-repo }}
+          destination-repo: ${{ inputs.destination-repo }}
+          dry-run: ${{ inputs.dry-run }}
