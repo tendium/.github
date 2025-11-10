@@ -4,6 +4,14 @@ These workflows are part of the special `.github` repository and can be called f
 
 **Note on paths**: The path `tendium/.github/.github/workflows/...` is correct - the first `.github` is the repository name, the second is the GitHub directory within it.
 
+**Version pinning**: You can reference workflows using:
+- `@main` - Latest version (default, may include breaking changes)
+- `@v1` - Major version tag (recommended for stability)
+- `@v1.2.3` - Specific version tag (maximum stability)
+- `@<commit-sha>` - Specific commit (for reproducibility)
+
+Example: `tendium/.github/.github/workflows/mirror-to-bitbucket.yml@v1`
+
 ## Claude Code Workflow
 
 AI-powered code reviews and interactive assistance using Anthropic's Claude.
