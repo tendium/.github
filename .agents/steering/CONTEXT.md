@@ -1,13 +1,13 @@
 # AI Context Documentation
-Generated: 2025-11-10 15:07
-Commit: 2de3389f5b995c8e888964a6a0a8431b3ae37189
+Generated: 2025-11-10 15:22
+Commit: a202465ebfb51921e6a736b8800533806cecd24a
 Mode: incremental
 
 ## Last Updated
-- Updated: workflows/mirror
-- Structure: kept as-is
-- Files analyzed: 1 (mirror-to-bitbucket.yml)
-- Changes detected since: 2025-11-10 14:38 (commit: d90f8189b2590d09b455e48200241fb01093eea7)
+- Updated: project (new domain)
+- Structure: added project/contributing and project/versioning
+- Files analyzed: 3 (CONTRIBUTING.md, CHANGELOG.md, workflows/README.md)
+- Changes detected since: 2025-11-10 15:07 (commit: 2de3389f5b995c8e888964a6a0a8431b3ae37189)
 
 ## Structure
 
@@ -23,6 +23,10 @@ This repository contains reusable GitHub Actions workflows and templates.
 - **templates**: GitHub templates
   - pr-template: Pull request template structure and philosophy
 
+- **project**: Project conventions and development
+  - contributing: Workflow creation, testing, and release process
+  - versioning: Version pinning strategies and tag management
+
 ## Key Conventions
 
 - **Reusable workflows**: Use `workflow_call` trigger pattern
@@ -30,6 +34,8 @@ This repository contains reusable GitHub Actions workflows and templates.
 - **Concurrency**: Repository-scoped groups prevent conflicts
 - **Context loading**: Standard pattern for AI context priming
 - **SSH authentication**: Agent-based key management for Git operations
+- **Versioning**: Semantic versioning with moving major version tags (v1 → latest v1.x.x)
+- **Version references**: Recommend `@v1` for stability with automatic bug fixes
 
 ## Usage
 
