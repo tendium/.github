@@ -23,11 +23,13 @@ dry-run: boolean (optional)
 
 ```yaml
 ssh-private-key: string (required)
-  SSH private key with write access to both repositories
+  SSH private key with write access to Bitbucket repository
 
 ssh-known-hosts: string (optional)
   SSH known hosts content for bitbucket.org
 ```
+
+**Note**: GitHub access is handled automatically via `GITHUB_TOKEN` - SSH key only needs Bitbucket write access.
 
 ## Operating Modes
 

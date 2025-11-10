@@ -1,7 +1,13 @@
 # AI Context Documentation
-Generated: 2025-11-10 14:38
-Commit: d90f8189b2590d09b455e48200241fb01093eea7
-Mode: initial
+Generated: 2025-11-10 15:07
+Commit: 2de3389f5b995c8e888964a6a0a8431b3ae37189
+Mode: incremental
+
+## Last Updated
+- Updated: workflows/mirror
+- Structure: kept as-is
+- Files analyzed: 1 (mirror-to-bitbucket.yml)
+- Changes detected since: 2025-11-10 14:38 (commit: d90f8189b2590d09b455e48200241fb01093eea7)
 
 ## Structure
 
