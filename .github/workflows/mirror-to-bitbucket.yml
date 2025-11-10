@@ -1,3 +1,26 @@
+# Mirror to Bitbucket
+#
+# Reusable workflow for mirroring GitHub repositories to Bitbucket via SSH.
+#
+# Usage example:
+#
+#   name: Mirror to Bitbucket
+#   on:
+#     push:
+#       branches:
+#         - master
+#   jobs:
+#     mirror:
+#       uses: tendium/.github/.github/workflows/mirror-to-bitbucket.yml@main
+#       with:
+#         repository: ${{ github.repository }}
+#         branches: "master"
+#       secrets:
+#         ssh-private-key: ${{ secrets.BITBUCKET_SSH_PRIVATE_KEY }}
+#         ssh-known-hosts: ${{ secrets.BITBUCKET_SSH_KNOWN_HOSTS }}
+#
+# For more examples, see: .github/workflows/README.md
+
 name: Mirror to Bitbucket
 
 on:
@@ -18,7 +41,7 @@ on:
         type: boolean
     secrets:
       ssh-private-key:
-        description: "SSH private key with write access to both repositories"
+        description: "SSH private key with write access to Bitbucket repository"
         required: true
       ssh-known-hosts:
         description: "SSH known hosts content for bitbucket.org"
