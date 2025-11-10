@@ -11,6 +11,11 @@ on:
         description: "SSH URL of the destination Bitbucket repository (e.g., git@bitbucket.org:org/repo.git)"
         required: true
         type: string
+      branches:
+        description: "Branches to sync (space-separated, e.g., 'master main' or 'master'). Leave empty for full mirror."
+        required: false
+        type: string
+        default: ""
       dry-run:
         description: "Perform a dry run without pushing to destination"
         default: false
@@ -32,12 +37,52 @@ jobs:
   mirror:
     runs-on: ubuntu-latest
     steps:
-      - name: Mirror repository
-        uses: wearerequired/git-mirror-action@v1
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.ssh-private-key }}
-          SSH_KNOWN_HOSTS: ${{ secrets.ssh-known-hosts }}
+      - name: Checkout source repository
+        uses: actions/checkout@v4
         with:
-          source-repo: ${{ inputs.source-repo }}
-          destination-repo: ${{ inputs.destination-repo }}
-          dry-run: ${{ inputs.dry-run }}
+          fetch-depth: 0
+
+      - name: Setup SSH and sync to Bitbucket
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.ssh-private-key }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+
+          if [ -n "${{ secrets.ssh-known-hosts }}" ]; then
+            printf '%s\n' "${{ secrets.ssh-known-hosts }}" > ~/.ssh/known_hosts
+            chmod 600 ~/.ssh/known_hosts
+          fi
+
+          # Start SSH agent and add key
+          eval "$(ssh-agent -s)"
+          ssh-add ~/.ssh/id_ed25519
+
+          # Add destination remote
+          git remote add destination "${{ inputs.destination-repo }}"
+
+          # Determine what to push
+          BRANCHES="${{ inputs.branches }}"
+          DRY_RUN="${{ inputs.dry-run }}"
+          DRY_RUN_FLAG=""
+
+          if [ "$DRY_RUN" = "true" ]; then
+            DRY_RUN_FLAG="--dry-run"
+            echo "DRY RUN MODE - No actual push will occur"
+          fi
+
+          if [ -z "$BRANCHES" ]; then
+            # Full mirror mode
+            echo "Performing full mirror (all branches and tags)..."
+            git push destination --mirror $DRY_RUN_FLAG
+          else
+            # Selective branch sync
+            echo "Syncing specific branches: $BRANCHES"
+            for branch in $BRANCHES; do
+              echo "Pushing branch: $branch"
+              git push destination "$branch:$branch" --force $DRY_RUN_FLAG
+            done
+
+            # Always sync tags
+            echo "Syncing tags..."
+            git push destination --tags --force $DRY_RUN_FLAG
+          fi
