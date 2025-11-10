@@ -3,12 +3,8 @@ name: Mirror to Bitbucket
 on:
   workflow_call:
     inputs:
-      source-repo:
-        description: "SSH URL of the source GitHub repository (e.g., git@github.com:org/repo.git)"
-        required: true
-        type: string
-      destination-repo:
-        description: "SSH URL of the destination Bitbucket repository (e.g., git@bitbucket.org:org/repo.git)"
+      repository:
+        description: "Repository name in format 'org/repo' (e.g., tendium/my-repo)"
         required: true
         type: string
       branches:
@@ -30,7 +26,7 @@ on:
 
 # Prevent concurrent mirror operations to avoid conflicts
 concurrency:
-  group: git-mirror-${{ inputs.destination-repo }}
+  group: git-mirror-${{ inputs.repository }}
   cancel-in-progress: false
 
 jobs:
@@ -57,8 +53,15 @@ jobs:
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/id_ed25519
 
+          # Construct SSH URLs
+          SOURCE_REPO="git@github.com:${{ inputs.repository }}.git"
+          DESTINATION_REPO="git@bitbucket.org:${{ inputs.repository }}.git"
+
+          echo "Source: $SOURCE_REPO"
+          echo "Destination: $DESTINATION_REPO"
+
           # Add destination remote
-          git remote add destination "${{ inputs.destination-repo }}"
+          git remote add destination "$DESTINATION_REPO"
 
           # Determine what to push
           BRANCHES="${{ inputs.branches }}"
