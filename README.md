@@ -21,23 +21,19 @@ See [workflows/README.md](.github/workflows/README.md) for detailed usage exampl
 
 ## Contributing
 
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines on creating and releasing workflows.
+
+Quick start:
 1. **Make changes** in feature branches
-2. **Test workflows** using the calling pattern documented in each workflow
+2. **Test workflows** using branch references (`@your-branch-name`)
 3. **Submit PR** using the provided template
 4. **AI Review** - Tag @claude in comments for AI assistance
 
-### Project Structure
+## Documentation
 
-```
-.github/
-├── workflows/          # Reusable workflow definitions
-├── pull_request_template.md
-└── CLAUDE.md          # AI coding standards
-```
-
-### Documentation
-
-- `CLAUDE.md` - AI agent coding standards and session rules
+- [CONTRIBUTING.md](CONTRIBUTING.md) - Workflow development and release process
+- [CHANGELOG.md](CHANGELOG.md) - Version history and release notes
+- `CLAUDE.md` - AI agent coding standards
 - `.agents/steering/` - Task-focused context for AI tools
 
 For questions or issues, open an issue in this repository.
